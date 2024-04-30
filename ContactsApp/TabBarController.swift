@@ -52,7 +52,7 @@ final class TabBarController: UITabBarController {
         self.viewControllers = datasource.map {
             switch $0 {
             case .contacts:
-                let contactsViewController = ContactViewController()
+                let contactsViewController = UINavigationController(rootViewController: ModelBuilder.createContactModule())
                 return contactsViewController
             case .favorite:
                 let favoriteViewController = FavoriteViewController()
@@ -67,4 +67,3 @@ final class TabBarController: UITabBarController {
         }
     }
 }
-

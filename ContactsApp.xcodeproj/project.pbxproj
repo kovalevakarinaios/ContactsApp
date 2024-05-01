@@ -19,6 +19,8 @@
 		02AC22E72BDFE5E5004F5ACD /* ModuleContactBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC22E62BDFE5E5004F5ACD /* ModuleContactBuilder.swift */; };
 		02AC22EA2BDFF51C004F5ACD /* ContactService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC22E92BDFF51C004F5ACD /* ContactService.swift */; };
 		02AC22EC2BE0DCFB004F5ACD /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC22EB2BE0DCFB004F5ACD /* ContactTableViewCell.swift */; };
+		02AC22F22BE22F0D004F5ACD /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC22F12BE22F0D004F5ACD /* DetailPresenter.swift */; };
+		02AC22F42BE23260004F5ACD /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC22F32BE23260004F5ACD /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		02AC22E62BDFE5E5004F5ACD /* ModuleContactBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleContactBuilder.swift; sourceTree = "<group>"; };
 		02AC22E92BDFF51C004F5ACD /* ContactService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactService.swift; sourceTree = "<group>"; };
 		02AC22EB2BE0DCFB004F5ACD /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
+		02AC22F12BE22F0D004F5ACD /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
+		02AC22F32BE23260004F5ACD /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,11 +74,12 @@
 			children = (
 				02AC22C72BDFB8B3004F5ACD /* AppDelegate.swift */,
 				02AC22C92BDFB8B3004F5ACD /* SceneDelegate.swift */,
+				02AC22DD2BDFBD23004F5ACD /* TabBarController.swift */,
 				02AC22E62BDFE5E5004F5ACD /* ModuleContactBuilder.swift */,
+				02AC22DB2BDFBB66004F5ACD /* FavoriteViewController.swift */,
 				02AC22E82BDFF392004F5ACD /* Service Layer */,
-				02AC22E02BDFC0C5004F5ACD /* Model */,
-				02AC22E12BDFC0CC004F5ACD /* Presenter */,
-				02AC22DF2BDFC0B6004F5ACD /* Views */,
+				02AC22ED2BE22EA4004F5ACD /* MainModule */,
+				02AC22EE2BE22EE3004F5ACD /* DetailModule */,
 				02AC22D02BDFB8B6004F5ACD /* Assets.xcassets */,
 				02AC22D22BDFB8B6004F5ACD /* LaunchScreen.storyboard */,
 				02AC22D52BDFB8B6004F5ACD /* Info.plist */,
@@ -85,10 +90,8 @@
 		02AC22DF2BDFC0B6004F5ACD /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				02AC22DD2BDFBD23004F5ACD /* TabBarController.swift */,
 				02AC22EB2BE0DCFB004F5ACD /* ContactTableViewCell.swift */,
 				02AC22CB2BDFB8B3004F5ACD /* ContactViewController.swift */,
-				02AC22DB2BDFBB66004F5ACD /* FavoriteViewController.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -115,6 +118,41 @@
 				02AC22E92BDFF51C004F5ACD /* ContactService.swift */,
 			);
 			name = "Service Layer";
+			sourceTree = "<group>";
+		};
+		02AC22ED2BE22EA4004F5ACD /* MainModule */ = {
+			isa = PBXGroup;
+			children = (
+				02AC22E02BDFC0C5004F5ACD /* Model */,
+				02AC22DF2BDFC0B6004F5ACD /* Views */,
+				02AC22E12BDFC0CC004F5ACD /* Presenter */,
+			);
+			name = MainModule;
+			sourceTree = "<group>";
+		};
+		02AC22EE2BE22EE3004F5ACD /* DetailModule */ = {
+			isa = PBXGroup;
+			children = (
+				02AC22EF2BE22EEF004F5ACD /* Presenter */,
+				02AC22F02BE22EF8004F5ACD /* View */,
+			);
+			name = DetailModule;
+			sourceTree = "<group>";
+		};
+		02AC22EF2BE22EEF004F5ACD /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				02AC22F12BE22F0D004F5ACD /* DetailPresenter.swift */,
+			);
+			name = Presenter;
+			sourceTree = "<group>";
+		};
+		02AC22F02BE22EF8004F5ACD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				02AC22F32BE23260004F5ACD /* DetailViewController.swift */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -190,7 +228,9 @@
 				02AC22CC2BDFB8B3004F5ACD /* ContactViewController.swift in Sources */,
 				02AC22E32BDFD2B1004F5ACD /* ContactPresenter.swift in Sources */,
 				02AC22EA2BDFF51C004F5ACD /* ContactService.swift in Sources */,
+				02AC22F42BE23260004F5ACD /* DetailViewController.swift in Sources */,
 				02AC22C82BDFB8B3004F5ACD /* AppDelegate.swift in Sources */,
+				02AC22F22BE22F0D004F5ACD /* DetailPresenter.swift in Sources */,
 				02AC22DC2BDFBB66004F5ACD /* FavoriteViewController.swift in Sources */,
 				02AC22DE2BDFBD23004F5ACD /* TabBarController.swift in Sources */,
 				02AC22EC2BE0DCFB004F5ACD /* ContactTableViewCell.swift in Sources */,

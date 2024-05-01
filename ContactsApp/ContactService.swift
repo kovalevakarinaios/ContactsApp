@@ -20,7 +20,6 @@ class ContactsService: ContactsServiceProtocol {
         let contactsRequest = CNContactFetchRequest(keysToFetch: keysToFetch)
         do {
             try CNContactStore().enumerateContacts(with: contactsRequest) { contact, _ in
-                
                 contacts.append(Contact(firstName: contact.givenName,
                                         lastName: contact.familyName,
                                         phoneNumber: self.createPhoneNumbersList(phoneNumbers: contact.phoneNumbers),

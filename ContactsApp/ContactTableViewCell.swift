@@ -32,12 +32,15 @@ class ContactTableViewCell: UITableViewCell {
     public lazy var fullNameLabel: UILabel = {
         var fullNameLabel = UILabel()
         fullNameLabel.textColor = .darkGray
+        fullNameLabel.numberOfLines = 0
         return fullNameLabel
     }()
     
     public lazy var phoneNumberLabel: UILabel = {
         var phoneNumberLabel = UILabel()
         phoneNumberLabel.textColor = .darkGray
+        phoneNumberLabel.numberOfLines = 0
+        phoneNumberLabel.lineBreakMode = .byWordWrapping
         return phoneNumberLabel
     }()
     
@@ -45,7 +48,7 @@ class ContactTableViewCell: UITableViewCell {
         var favoriteButtonConfiguration = UIButton.Configuration.tinted()
         favoriteButtonConfiguration.image = UIImage(systemName: "heart.fill")
         favoriteButtonConfiguration.imagePadding = 3
-        favoriteButtonConfiguration.buttonSize = .small
+        favoriteButtonConfiguration.buttonSize = .mini
         return favoriteButtonConfiguration
     }()
     
@@ -74,7 +77,7 @@ class ContactTableViewCell: UITableViewCell {
             self.avatar.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 2),
             self.avatar.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -2),
             self.avatar.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 2),
-            self.avatar.trailingAnchor.constraint(equalTo: self.stackViewForLabels.leadingAnchor, constant: 2),
+            self.avatar.trailingAnchor.constraint(equalTo: self.stackViewForLabels.leadingAnchor, constant: -2),
             self.avatar.widthAnchor.constraint(equalTo: self.contentView.heightAnchor),
             self.stackViewForLabels.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 2),
             self.stackViewForLabels.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -2),

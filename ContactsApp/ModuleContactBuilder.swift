@@ -9,6 +9,7 @@ import UIKit
 
 protocol Builder {
     static func createContactModule() -> UIViewController
+    static func createDetailModule(contact: Contact?) -> UIViewController
 }
 
 class ModelBuilder: Builder {
@@ -17,6 +18,13 @@ class ModelBuilder: Builder {
         let contactService = ContactsService()
         let view = ContactViewController()
         let presenter = ContactPresenter(view: view, contactService: contactService)
+        view.presenter = presenter
+        return view
+    }
+    
+    static func createDetailModule(contact: Contact?) -> UIViewController {
+        let view = DetailViewController()
+        let presenter = DetailPresenter(view: view, contact: contact)
         view.presenter = presenter
         return view
     }

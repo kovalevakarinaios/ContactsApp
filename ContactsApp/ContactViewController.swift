@@ -75,23 +75,39 @@ class ContactViewController: UIViewController {
 }
 
 extension ContactViewController: ContactViewProtocol {
-    func showAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: title, style: .cancel))
-        self.present(alert, animated: true)
-    }
     
     func success() {
         self.tableView.reloadData()
     }
     
-    func failure() {
-        print("Error")
+    func failure(alertType: AlertType) {
+        switch alertType {
+        case .restricted:
+            let alert = UIAlertController(title: nil, message: alertType.rawValue, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self.present(alert, animated: true)
+        case .denied:
+            let alert = UIAlertController(title: nil, message: alertType.rawValue, preferredStyle: .alert)
+            if let settings = URL(string: UIApplication.openSettingsURLString),
+               UIApplication.shared.canOpenURL(settings) {
+                alert.addAction(UIAlertAction(title: "Open Settings", style: .destructive, handler: { _ in
+                    UIApplication.shared.open(settings)
+                })
+                )
+            }
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+            self.present(alert, animated: true)
+        }
+        
     }
 }
 
 extension ContactViewController: UITableViewDelegate {
-    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let contact = self.presenter?.contacts?[indexPath.row]
+        let detailViewController = ModelBuilder.createDetailModule(contact: contact)
+        self.navigationController?.pushViewController(detailViewController, animated: true)
+    }
 }
 
 extension ContactViewController: UITableViewDataSource {
@@ -110,7 +126,7 @@ extension ContactViewController: UITableViewDataSource {
         } else {
             cell.avatar.image = UIImage(systemName: "person")
         }
-        
+
         return cell
     }
 }

@@ -7,10 +7,14 @@
 
 import Contacts
 
+enum AlertType: String {
+    case restricted = "Unfortunately, you cannot give the app access to your contacts due to parental control mode or something else"
+    case denied = "Please go to settings to give the app access to your contacts"
+}
+
 protocol ContactViewProtocol: AnyObject {
     func success()
-    func failure()
-    func showAlert(title: String, message: String)
+    func failure(alertType: AlertType)
 }
 
 protocol ContactViewPresenterProtocol: AnyObject {
@@ -42,15 +46,15 @@ class ContactPresenter: ContactViewPresenterProtocol {
                             self.contacts = contacts
                             self.view.success()
                         case .failure(let error):
-                            self.view.failure()
+                            self.view.failure(alertType: .denied)
                         }
                     }
                 }
             }
         case .restricted:
-            self.view.showAlert(title: "Restrict", message: "Please")
+            self.view.failure(alertType: .restricted)
         case .denied:
-            self.view.showAlert(title: "Denied", message: "Please")
+            self.view.failure(alertType: .denied)
         case .authorized:
             self.contactService.getContacts { result in
                 DispatchQueue.main.async {
@@ -59,7 +63,7 @@ class ContactPresenter: ContactViewPresenterProtocol {
                         self.contacts = contacts
                         self.view.success()
                     case .failure(let error):
-                        self.view.failure()
+                        self.view.failure(alertType: .denied)
                     }
                 }
             }

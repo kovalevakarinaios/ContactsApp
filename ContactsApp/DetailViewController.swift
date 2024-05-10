@@ -34,6 +34,7 @@ class DetailViewController: UIViewController {
         firstNameTextField.leftViewMode = .always
         firstNameTextField.leftView = fieldName
         firstNameTextField.borderStyle = .roundedRect
+        firstNameTextField.isUserInteractionEnabled = false
         return firstNameTextField
     }()
     
@@ -45,6 +46,7 @@ class DetailViewController: UIViewController {
         lastNameTextField.leftViewMode = .always
         lastNameTextField.leftView = fieldName
         lastNameTextField.borderStyle = .roundedRect
+        lastNameTextField.isUserInteractionEnabled = false
         return lastNameTextField
     }()
     
@@ -56,6 +58,7 @@ class DetailViewController: UIViewController {
         phoneNumberTextField.leftViewMode = .always
         phoneNumberTextField.leftView = fieldName
         phoneNumberTextField.borderStyle = .roundedRect
+        phoneNumberTextField.isUserInteractionEnabled = false
         return phoneNumberTextField
     }()
     
@@ -63,6 +66,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
         self.presenter?.setComment()
+        self.setupNavBar()
         self.setupAvatarUI()
         self.setupStackViewUI()
     }
@@ -85,8 +89,26 @@ class DetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             self.stackViewForTextFields.topAnchor.constraint(equalTo: self.avatar.bottomAnchor, constant: 5),
             self.stackViewForTextFields.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5),
-            self.stackViewForTextFields.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5)
+            self.stackViewForTextFields.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
+            self.stackViewForTextFields.bottomAnchor.constraint(equalTo: self.view.keyboardLayoutGuide.topAnchor, constant: -10)
         ])
+    }
+    
+    private func setupNavBar() {
+        self.navigationItem.rightBarButtonItem = self.editButtonItem
+    }
+    
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+        if isEditing {
+            [self.firstNameTextField, self.lastNameTextField, self.phoneNumberTextField].forEach { $0.isUserInteractionEnabled = true }
+            self.navigationItem.setHidesBackButton(true, animated: true)
+            self.tabBarController?.tabBar.isHidden = true
+        } else {
+            [self.firstNameTextField, self.lastNameTextField, self.phoneNumberTextField].forEach { $0.isUserInteractionEnabled = false }
+            self.navigationItem.setHidesBackButton(false, animated: true)
+            self.tabBarController?.tabBar.isHidden = false
+        }
     }
 }
 
@@ -102,4 +124,8 @@ extension DetailViewController: DetailViewProtocol {
             self.avatar.image = UIImage(systemName: "person")
         }
     }
+}
+
+extension DetailViewController: UITextViewDelegate {
+    
 }

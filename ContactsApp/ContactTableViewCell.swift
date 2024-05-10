@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol ContactViewControllerProtocol {
+    func addContactToFavorite(cell: UITableViewCell)
+}
+
 class ContactTableViewCell: UITableViewCell {
     
     static let identifier = "ContactListTableViewCell"
+    
+    var delegate: ContactViewControllerProtocol?
     
     public lazy var avatar: UIImageView = {
         var avatar = UIImageView()
@@ -32,30 +38,38 @@ class ContactTableViewCell: UITableViewCell {
     public lazy var fullNameLabel: UILabel = {
         var fullNameLabel = UILabel()
         fullNameLabel.textColor = .darkGray
-        fullNameLabel.numberOfLines = 0
         return fullNameLabel
     }()
     
     public lazy var phoneNumberLabel: UILabel = {
         var phoneNumberLabel = UILabel()
         phoneNumberLabel.textColor = .darkGray
-        phoneNumberLabel.numberOfLines = 0
-        phoneNumberLabel.lineBreakMode = .byWordWrapping
         return phoneNumberLabel
     }()
     
+    let handler: UIButton.ConfigurationUpdateHandler = { button in
+        switch button.state {
+        case .selected:
+            button.configuration?.baseForegroundColor = .systemRed
+        default:
+            button.configuration?.baseForegroundColor = .systemGray
+        }
+    }
+    
     private lazy var favoriteButtonConfiguration: UIButton.Configuration = {
-        var favoriteButtonConfiguration = UIButton.Configuration.tinted()
+        var favoriteButtonConfiguration = UIButton.Configuration.borderless()
         favoriteButtonConfiguration.image = UIImage(systemName: "heart.fill")
         favoriteButtonConfiguration.imagePadding = 3
         favoriteButtonConfiguration.buttonSize = .mini
+        favoriteButtonConfiguration.baseBackgroundColor = .clear
         return favoriteButtonConfiguration
     }()
     
     private lazy var favoriteСontactsButton: UIButton = {
         var favoriteСontactsButton = UIButton(configuration: self.favoriteButtonConfiguration)
         favoriteСontactsButton.translatesAutoresizingMaskIntoConstraints = false
-//        favoriteСontactsButton.addTarget(self, action: #selector(self.loadContacts), for: .touchUpInside)
+        favoriteСontactsButton.configurationUpdateHandler = handler
+        favoriteСontactsButton.addTarget(self, action: #selector(self.addToFavorite), for: .touchUpInside)
         return favoriteСontactsButton
     }()
     
@@ -86,5 +100,10 @@ class ContactTableViewCell: UITableViewCell {
             self.favoriteСontactsButton.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -2),
             self.favoriteСontactsButton.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -2)
         ])
+    }
+    
+    @objc func addToFavorite() {
+        self.delegate?.addContactToFavorite(cell: self)
+        self.favoriteСontactsButton.isSelected.toggle()
     }
 }

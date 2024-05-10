@@ -31,6 +31,7 @@ class ContactViewController: UIViewController {
         var tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(ContactTableViewCell.self, forCellReuseIdentifier: ContactTableViewCell.identifier)
+        tableView.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(self.showMenu)))
         tableView.delegate = self
         tableView.dataSource = self
         return tableView
@@ -40,8 +41,7 @@ class ContactViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
         self.setupNavigationBar()
-        self.setupTableView()
-        self.setupButtonUI()
+        self.presenter?.checkContacts()
     }
     
     private func setupButtonUI() {
@@ -53,7 +53,7 @@ class ContactViewController: UIViewController {
         ])
     }
     
-    private func setupTableView() {
+    private func setupTableViewUI() {
         self.view.addSubview(self.tableView)
         
         NSLayoutConstraint.activate([
@@ -72,22 +72,44 @@ class ContactViewController: UIViewController {
     @objc func loadContacts() {
         self.presenter?.requestAccess()
     }
+    
+    @objc func showMenu(sender: UILongPressGestureRecognizer) {
+        let touchPoint = sender.location(in: self.tableView)
+        guard let indexPath = self.tableView.indexPathForRow(at: touchPoint) else { return }
+        
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Copy phone number", style: .default, handler: { _ in
+            UIPasteboard.general.string = self.presenter?.contacts?[indexPath.row].phoneNumber
+        }))
+        alert.addAction(UIAlertAction(title: "Share contact", style: .default, handler: { _ in
+            let activityController = UIActivityViewController(activityItems: [self.presenter?.contacts?[indexPath.row].phoneNumber], applicationActivities: nil)
+            self.present(activityController, animated: true)
+        }))
+        alert.addAction(UIAlertAction(title: "Delete contact", style: .destructive, handler: { _ in
+            self.presenter?.contacts?.remove(at: indexPath.row)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        self.present(alert, animated: true)
+    }
+    
 }
 
 extension ContactViewController: ContactViewProtocol {
-    
+
     func success() {
+        self.accessСontactsButton.removeFromSuperview()
+        self.setupTableViewUI()
         self.tableView.reloadData()
     }
     
-    func failure(alertType: AlertType) {
+    func failure(alertType: AlertType?) {
         switch alertType {
         case .restricted:
-            let alert = UIAlertController(title: nil, message: alertType.rawValue, preferredStyle: .alert)
+            let alert = UIAlertController(title: nil, message: alertType?.rawValue, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
             self.present(alert, animated: true)
         case .denied:
-            let alert = UIAlertController(title: nil, message: alertType.rawValue, preferredStyle: .alert)
+            let alert = UIAlertController(title: nil, message: alertType?.rawValue, preferredStyle: .alert)
             if let settings = URL(string: UIApplication.openSettingsURLString),
                UIApplication.shared.canOpenURL(settings) {
                 alert.addAction(UIAlertAction(title: "Open Settings", style: .destructive, handler: { _ in
@@ -97,6 +119,8 @@ extension ContactViewController: ContactViewProtocol {
             }
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
             self.present(alert, animated: true)
+        case .none:
+            self.setupButtonUI()
         }
         
     }
@@ -128,5 +152,13 @@ extension ContactViewController: UITableViewDataSource {
         }
 
         return cell
+    }
+}
+
+extension ContactViewController: ContactViewControllerProtocol {
+
+    func addContactToFavorite(cell: UITableViewCell) {
+        guard let indexPath = self.tableView.indexPath(for: cell) else { return }
+        self.presenter?.addToFavorite(indexPath: indexPath)
     }
 }

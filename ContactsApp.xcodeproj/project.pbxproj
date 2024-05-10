@@ -21,6 +21,8 @@
 		02AC22EC2BE0DCFB004F5ACD /* ContactTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC22EB2BE0DCFB004F5ACD /* ContactTableViewCell.swift */; };
 		02AC22F22BE22F0D004F5ACD /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC22F12BE22F0D004F5ACD /* DetailPresenter.swift */; };
 		02AC22F42BE23260004F5ACD /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC22F32BE23260004F5ACD /* DetailViewController.swift */; };
+		02AC22F62BE247C6004F5ACD /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC22F52BE247C6004F5ACD /* Storage.swift */; };
+		02AC22FB2BEDF0E8004F5ACD /* FavoritePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AC22FA2BEDF0E8004F5ACD /* FavoritePresenter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		02AC22EB2BE0DCFB004F5ACD /* ContactTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactTableViewCell.swift; sourceTree = "<group>"; };
 		02AC22F12BE22F0D004F5ACD /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
 		02AC22F32BE23260004F5ACD /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		02AC22F52BE247C6004F5ACD /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
+		02AC22FA2BEDF0E8004F5ACD /* FavoritePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritePresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,10 +80,10 @@
 				02AC22C92BDFB8B3004F5ACD /* SceneDelegate.swift */,
 				02AC22DD2BDFBD23004F5ACD /* TabBarController.swift */,
 				02AC22E62BDFE5E5004F5ACD /* ModuleContactBuilder.swift */,
-				02AC22DB2BDFBB66004F5ACD /* FavoriteViewController.swift */,
 				02AC22E82BDFF392004F5ACD /* Service Layer */,
 				02AC22ED2BE22EA4004F5ACD /* MainModule */,
 				02AC22EE2BE22EE3004F5ACD /* DetailModule */,
+				02AC22F72BEBA57E004F5ACD /* FavoriteModule */,
 				02AC22D02BDFB8B6004F5ACD /* Assets.xcassets */,
 				02AC22D22BDFB8B6004F5ACD /* LaunchScreen.storyboard */,
 				02AC22D52BDFB8B6004F5ACD /* Info.plist */,
@@ -116,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				02AC22E92BDFF51C004F5ACD /* ContactService.swift */,
+				02AC22F52BE247C6004F5ACD /* Storage.swift */,
 			);
 			name = "Service Layer";
 			sourceTree = "<group>";
@@ -153,6 +158,31 @@
 				02AC22F32BE23260004F5ACD /* DetailViewController.swift */,
 			);
 			name = View;
+			sourceTree = "<group>";
+		};
+		02AC22F72BEBA57E004F5ACD /* FavoriteModule */ = {
+			isa = PBXGroup;
+			children = (
+				02AC22F82BEBA5AF004F5ACD /* View */,
+				02AC22F92BEBA5B3004F5ACD /* Presenter */,
+			);
+			name = FavoriteModule;
+			sourceTree = "<group>";
+		};
+		02AC22F82BEBA5AF004F5ACD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				02AC22DB2BDFBB66004F5ACD /* FavoriteViewController.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		02AC22F92BEBA5B3004F5ACD /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				02AC22FA2BEDF0E8004F5ACD /* FavoritePresenter.swift */,
+			);
+			name = Presenter;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -231,12 +261,14 @@
 				02AC22F42BE23260004F5ACD /* DetailViewController.swift in Sources */,
 				02AC22C82BDFB8B3004F5ACD /* AppDelegate.swift in Sources */,
 				02AC22F22BE22F0D004F5ACD /* DetailPresenter.swift in Sources */,
+				02AC22FB2BEDF0E8004F5ACD /* FavoritePresenter.swift in Sources */,
 				02AC22DC2BDFBB66004F5ACD /* FavoriteViewController.swift in Sources */,
 				02AC22DE2BDFBD23004F5ACD /* TabBarController.swift in Sources */,
 				02AC22EC2BE0DCFB004F5ACD /* ContactTableViewCell.swift in Sources */,
 				02AC22CA2BDFB8B3004F5ACD /* SceneDelegate.swift in Sources */,
 				02AC22E72BDFE5E5004F5ACD /* ModuleContactBuilder.swift in Sources */,
 				02AC22E52BDFD5C7004F5ACD /* Contact.swift in Sources */,
+				02AC22F62BE247C6004F5ACD /* Storage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -21,8 +21,9 @@ protocol ContactViewPresenterProtocol: AnyObject {
     init(view: ContactViewProtocol, contactService: ContactsServiceProtocol)
     var contacts: [Contact]? { get set }
     func requestAccess()
-    func checkContacts()
+    func checkSaveContacts()
     func addToFavorite(indexPath: IndexPath)
+    func configure(cell: ContactTableViewCell, indexPath: IndexPath)
 }
 
 class ContactPresenter: ContactViewPresenterProtocol {
@@ -63,7 +64,8 @@ class ContactPresenter: ContactViewPresenterProtocol {
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let contacts):
-                        self.contacts = contacts
+                        Storage.saveContacts(contacts: contacts)
+                        self.contacts = Storage.readContacts()
                         self.view.success()
                     case .failure(let error):
                         self.view.failure(alertType: .denied)
@@ -75,7 +77,7 @@ class ContactPresenter: ContactViewPresenterProtocol {
         }
     }
     
-    func checkContacts() {
+    func checkSaveContacts() {
         if let contacts = Storage.readContacts() {
             self.contacts = contacts
             self.view.success()
@@ -86,6 +88,19 @@ class ContactPresenter: ContactViewPresenterProtocol {
     
     func addToFavorite(indexPath: IndexPath) {
         self.contacts?[indexPath.row].isFavorite.toggle()
+        if let contacts = contacts {
+            Storage.saveContacts(contacts: contacts)
+        }
         self.view.success()
     }
+    
+    func configure(cell: ContactTableViewCell, indexPath: IndexPath) {
+        if let contact = self.contacts?[indexPath.row] {
+            cell.configureCell(firstName: contact.firstName,
+                               phoneNumber: contact.phoneNumber,
+                               photo: contact.photo, 
+                               isSelected: contact.isFavorite)
+        }
+    }
+    
 }

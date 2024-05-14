@@ -41,7 +41,7 @@ class ContactViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
         self.setupNavigationBar()
-        self.presenter?.checkContacts()
+        self.presenter?.checkSaveContacts()
     }
     
     private func setupButtonUI() {
@@ -141,16 +141,8 @@ extension ContactViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.identifier, for: indexPath) as? ContactTableViewCell else { return UITableViewCell() }
-        // не по MVP заменить
-        cell.fullNameLabel.text = self.presenter?.contacts?[indexPath.row].firstName
-        cell.phoneNumberLabel.text = self.presenter?.contacts?[indexPath.row].phoneNumber
-        
-        if let photo = self.presenter?.contacts?[indexPath.row].photo {
-            cell.avatar.image = UIImage(data: photo)
-        } else {
-            cell.avatar.image = UIImage(systemName: "person")
-        }
-
+        cell.delegate = self
+        self.presenter?.configure(cell: cell, indexPath: indexPath)
         return cell
     }
 }

@@ -28,4 +28,11 @@ class ModelBuilder: Builder {
         view.presenter = presenter
         return view
     }
+    
+    static func createFavoriteModule() -> UIViewController {
+        let view = FavoriteViewController()
+        let presenter = FavoritePresenter(view: view)
+        view.presenter = presenter
+        return view
+    }
 }

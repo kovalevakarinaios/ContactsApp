@@ -9,6 +9,8 @@ import UIKit
 
 class FavoriteViewController: UIViewController {
     
+    var presenter: FavoriteViewPresenterProtocol!
+    
     private lazy var tableView: UITableView = {
         var tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -21,6 +23,12 @@ class FavoriteViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
+        self.setupTableViewUI()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.presenter.getFavoriteContacts()
     }
     
     private func setupTableViewUI() {
@@ -29,7 +37,8 @@ class FavoriteViewController: UIViewController {
         NSLayoutConstraint.activate([
             self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
             self.tableView.leadingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.leadingAnchor),
-            self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor)
+            self.tableView.trailingAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.trailingAnchor),
+            self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
     }
 }
@@ -37,14 +46,23 @@ class FavoriteViewController: UIViewController {
 extension FavoriteViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        self.presenter.favoriteContacts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.identifier, for: indexPath) as? ContactTableViewCell else { return UITableViewCell() }
+        self.presenter.configure(cell: cell, indexPath: indexPath)
+        return cell
     }
 }
 
 extension FavoriteViewController: UITableViewDelegate {
     
+}
+
+extension FavoriteViewController: FavoriteViewProtocol {
+    
+    func success() {
+        self.tableView.reloadData()
+    }
 }

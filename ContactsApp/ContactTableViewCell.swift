@@ -17,7 +17,7 @@ class ContactTableViewCell: UITableViewCell {
     
     var delegate: ContactViewControllerProtocol?
     
-    public lazy var avatar: UIImageView = {
+    private lazy var avatar: UIImageView = {
         var avatar = UIImageView()
         avatar.translatesAutoresizingMaskIntoConstraints = false
         avatar.image = UIImage(systemName: "person.fill.checkmark.rtl")
@@ -35,19 +35,19 @@ class ContactTableViewCell: UITableViewCell {
         return stackViewForLabels
     }()
 
-    public lazy var fullNameLabel: UILabel = {
+    private lazy var fullNameLabel: UILabel = {
         var fullNameLabel = UILabel()
         fullNameLabel.textColor = .darkGray
         return fullNameLabel
     }()
     
-    public lazy var phoneNumberLabel: UILabel = {
+    private lazy var phoneNumberLabel: UILabel = {
         var phoneNumberLabel = UILabel()
         phoneNumberLabel.textColor = .darkGray
         return phoneNumberLabel
     }()
     
-    let handler: UIButton.ConfigurationUpdateHandler = { button in
+    private lazy var handler: UIButton.ConfigurationUpdateHandler = { button in
         switch button.state {
         case .selected:
             button.configuration?.baseForegroundColor = .systemRed
@@ -102,8 +102,29 @@ class ContactTableViewCell: UITableViewCell {
         ])
     }
     
-    @objc func addToFavorite() {
+    public func configureCell(firstName: String, phoneNumber: String, photo: Data?, isSelected: Bool) {
+        self.fullNameLabel.text = firstName
+        self.phoneNumberLabel.text = phoneNumber
+        
+        if let photo = photo {
+            self.avatar.image = UIImage(data: photo)
+        } else {
+            self.avatar.image = UIImage(systemName: "person")
+        }
+        
+        isSelected ? (self.favoriteСontactsButton.isSelected = true) : (self.favoriteСontactsButton.isSelected = false)
+        
+    }
+    
+    @objc private func addToFavorite() {
         self.delegate?.addContactToFavorite(cell: self)
-        self.favoriteСontactsButton.isSelected.toggle()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        self.fullNameLabel.text = nil
+        self.phoneNumberLabel.text = nil
+        self.avatar.image = nil
+        self.favoriteСontactsButton.isSelected = false
     }
 }

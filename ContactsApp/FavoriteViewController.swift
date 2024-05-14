@@ -51,13 +51,14 @@ extension FavoriteViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ContactTableViewCell.identifier, for: indexPath) as? ContactTableViewCell else { return UITableViewCell() }
+        cell.selectionStyle = .none
         self.presenter.configure(cell: cell, indexPath: indexPath)
         return cell
     }
 }
 
 extension FavoriteViewController: UITableViewDelegate {
-    
+   
 }
 
 extension FavoriteViewController: FavoriteViewProtocol {

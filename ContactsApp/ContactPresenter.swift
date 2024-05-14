@@ -24,6 +24,7 @@ protocol ContactViewPresenterProtocol: AnyObject {
     func checkSaveContacts()
     func addToFavorite(indexPath: IndexPath)
     func configure(cell: ContactTableViewCell, indexPath: IndexPath)
+    func deleteContact(indexPath: IndexPath)
 }
 
 class ContactPresenter: ContactViewPresenterProtocol {
@@ -103,4 +104,11 @@ class ContactPresenter: ContactViewPresenterProtocol {
         }
     }
     
+    func deleteContact(indexPath: IndexPath) {
+        self.contacts?.remove(at: indexPath.row)
+        if let contacts =  self.contacts {
+            Storage.saveContacts(contacts: contacts)
+            self.view.success()
+        }
+    }
 }

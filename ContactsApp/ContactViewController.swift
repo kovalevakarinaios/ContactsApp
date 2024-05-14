@@ -86,7 +86,8 @@ class ContactViewController: UIViewController {
             self.present(activityController, animated: true)
         }))
         alert.addAction(UIAlertAction(title: "Delete contact", style: .destructive, handler: { _ in
-            self.presenter?.contacts?.remove(at: indexPath.row)
+            self.presenter?.deleteContact(indexPath: indexPath)
+          
         }))
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         self.present(alert, animated: true)

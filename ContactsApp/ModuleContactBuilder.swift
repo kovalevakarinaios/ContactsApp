@@ -10,6 +10,7 @@ import UIKit
 protocol Builder {
     static func createContactModule() -> UIViewController
     static func createDetailModule(contact: Contact?) -> UIViewController
+    static func createFavoriteModule() -> UIViewController
 }
 
 class ModelBuilder: Builder {

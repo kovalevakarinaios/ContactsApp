@@ -28,7 +28,7 @@ protocol ContactViewPresenterProtocol: AnyObject {
 }
 
 class ContactPresenter: ContactViewPresenterProtocol {
-
+    
     private let view: ContactViewProtocol
     private let contactService: ContactsServiceProtocol
     
@@ -99,16 +99,21 @@ class ContactPresenter: ContactViewPresenterProtocol {
         if let contact = self.contacts?[indexPath.row] {
             cell.configureCell(firstName: contact.firstName,
                                phoneNumber: contact.phoneNumber,
-                               photo: contact.photo, 
+                               photo: contact.photo,
                                isSelected: contact.isFavorite)
         }
     }
     
     func deleteContact(indexPath: IndexPath) {
         self.contacts?.remove(at: indexPath.row)
-        if let contacts =  self.contacts {
+        if let contacts = self.contacts {
             Storage.saveContacts(contacts: contacts)
             self.view.success()
+        }
+        
+        if let contacts = self.contacts,
+           contacts.isEmpty {
+            self.view.failure(alertType: .none)
         }
     }
 }

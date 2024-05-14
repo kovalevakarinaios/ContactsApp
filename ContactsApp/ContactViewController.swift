@@ -123,7 +123,6 @@ extension ContactViewController: ContactViewProtocol {
         case .none:
             self.setupButtonUI()
         }
-        
     }
 }
 

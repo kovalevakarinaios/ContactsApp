@@ -39,4 +39,8 @@ class ContactsService: ContactsServiceProtocol {
         }
         return numbers
     }
+    
+    deinit {
+        print("ContactService deinit")
+    }
 }

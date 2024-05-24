@@ -27,48 +27,32 @@ class DetailViewController: UIViewController {
     }()
     
     private lazy var firstNameTextField: UITextField = {
-        var firstNameTextField = UITextField()
-        let fieldName = UILabel()
-        fieldName.text = "First Name"
-        fieldName.font = UIFont.boldSystemFont(ofSize: 17)
-        firstNameTextField.leftViewMode = .always
-        firstNameTextField.leftView = fieldName
-        firstNameTextField.borderStyle = .roundedRect
-        firstNameTextField.isUserInteractionEnabled = false
+        var firstNameTextField = createTextField(fieldName: "First Name")
         return firstNameTextField
     }()
     
     private lazy var lastNameTextField: UITextField = {
-        var lastNameTextField = UITextField()
-        let fieldName = UILabel()
-        fieldName.text = "Last Name"
-        fieldName.font = UIFont.boldSystemFont(ofSize: 17)
-        lastNameTextField.leftViewMode = .always
-        lastNameTextField.leftView = fieldName
-        lastNameTextField.borderStyle = .roundedRect
-        lastNameTextField.isUserInteractionEnabled = false
+        var lastNameTextField = createTextField(fieldName: "Last Name")
         return lastNameTextField
     }()
     
     private lazy var phoneNumberTextField: UITextField = {
-        var phoneNumberTextField = UITextField()
-        let fieldName = UILabel()
-        fieldName.text = "Phone Number"
-        fieldName.font = UIFont.boldSystemFont(ofSize: 17)
-        phoneNumberTextField.leftViewMode = .always
-        phoneNumberTextField.leftView = fieldName
-        phoneNumberTextField.borderStyle = .roundedRect
-        phoneNumberTextField.isUserInteractionEnabled = false
+        var phoneNumberTextField = createTextField(fieldName: "Phone Number")
         return phoneNumberTextField
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
-        self.presenter?.setComment()
+        self.presenter?.setContact()
         self.setupNavBar()
         self.setupAvatarUI()
         self.setupStackViewUI()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.presenter?.checkUpdate(firstName: self.firstNameTextField.text, lastName: self.lastNameTextField.text, phoneNumber: self.phoneNumberTextField.text)
     }
     
     private func setupAvatarUI() {
@@ -89,8 +73,7 @@ class DetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             self.stackViewForTextFields.topAnchor.constraint(equalTo: self.avatar.bottomAnchor, constant: 5),
             self.stackViewForTextFields.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -5),
-            self.stackViewForTextFields.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5),
-            self.stackViewForTextFields.bottomAnchor.constraint(equalTo: self.view.keyboardLayoutGuide.topAnchor, constant: -10)
+            self.stackViewForTextFields.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 5)
         ])
     }
     
@@ -98,6 +81,18 @@ class DetailViewController: UIViewController {
         self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
+    private func createTextField(fieldName: String) -> UITextField {
+        let textField = UITextField()
+        let fieldNameLabel = UILabel()
+        fieldNameLabel.text = fieldName
+        fieldNameLabel.font = UIFont.boldSystemFont(ofSize: 17)
+        textField.leftViewMode = .always
+        textField.leftView = fieldNameLabel
+        textField.borderStyle = .roundedRect
+        textField.isUserInteractionEnabled = false
+        return textField
+    }
+
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         if isEditing {
@@ -110,22 +105,22 @@ class DetailViewController: UIViewController {
             self.tabBarController?.tabBar.isHidden = false
         }
     }
+    
+    deinit {
+        print("Detail VC deinit")
+    }
 }
 
 extension DetailViewController: DetailViewProtocol {
-    func setContact(contact: Contact?) {
-        self.firstNameTextField.text = contact?.firstName
-        self.lastNameTextField.text = contact?.lastName
-        self.phoneNumberTextField.text = contact?.phoneNumber
+    func setContact(firstName: String?, lastName: String?, phoneNumber: String?, photo: Data?) {
+        self.firstNameTextField.text = firstName
+        self.lastNameTextField.text = lastName
+        self.phoneNumberTextField.text = phoneNumber
         
-        if let photo = contact?.photo {
+        if let photo = photo {
             self.avatar.image = UIImage(data: photo)
         } else {
             self.avatar.image = UIImage(systemName: "person")
         }
     }
-}
-
-extension DetailViewController: UITextViewDelegate {
-    
 }

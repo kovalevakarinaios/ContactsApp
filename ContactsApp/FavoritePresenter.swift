@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol FavoriteViewProtocol {
+protocol FavoriteViewProtocol: AnyObject {
     func success()
 }
 
@@ -20,7 +20,7 @@ protocol FavoriteViewPresenterProtocol {
 
 class FavoritePresenter: FavoriteViewPresenterProtocol {
 
-    private let view: FavoriteViewProtocol
+    weak private var view: FavoriteViewProtocol?
     var favoriteContacts: [Contact] = []
 
     required init(view: FavoriteViewProtocol) {
@@ -30,7 +30,7 @@ class FavoritePresenter: FavoriteViewPresenterProtocol {
     func getFavoriteContacts() {
         guard let contacts = Storage.readContacts() else { return }
         self.favoriteContacts = contacts.filter { $0.isFavorite }
-        self.view.success()
+        self.view?.success()
     }
     
     func configure(cell: ContactTableViewCell, indexPath: IndexPath) {
@@ -39,5 +39,9 @@ class FavoritePresenter: FavoriteViewPresenterProtocol {
                            phoneNumber: favoriteContact.phoneNumber,
                            photo: favoriteContact.photo, 
                            isSelected: favoriteContact.isFavorite)
+    }
+    
+    deinit {
+        print("FavoritePresenter deinit")
     }
 }

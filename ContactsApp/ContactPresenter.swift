@@ -29,7 +29,7 @@ protocol ContactViewPresenterProtocol: AnyObject {
 
 class ContactPresenter: ContactViewPresenterProtocol {
     
-    private let view: ContactViewProtocol
+    weak private var view: ContactViewProtocol?
     private let contactService: ContactsServiceProtocol
     
     var contacts: [Contact]?
@@ -49,17 +49,17 @@ class ContactPresenter: ContactViewPresenterProtocol {
                         case .success(let contacts):
                             Storage.saveContacts(contacts: contacts)
                             self.contacts = Storage.readContacts()
-                            self.view.success()
+                            self.view?.success()
                         case .failure(let error):
-                            self.view.failure(alertType: .denied)
+                            self.view?.failure(alertType: .denied)
                         }
                     }
                 }
             }
         case .restricted:
-            self.view.failure(alertType: .restricted)
+            self.view?.failure(alertType: .restricted)
         case .denied:
-            self.view.failure(alertType: .denied)
+            self.view?.failure(alertType: .denied)
         case .authorized:
             self.contactService.getContacts { result in
                 DispatchQueue.main.async {
@@ -67,9 +67,9 @@ class ContactPresenter: ContactViewPresenterProtocol {
                     case .success(let contacts):
                         Storage.saveContacts(contacts: contacts)
                         self.contacts = Storage.readContacts()
-                        self.view.success()
+                        self.view?.success()
                     case .failure(let error):
-                        self.view.failure(alertType: .denied)
+                        self.view?.failure(alertType: .denied)
                     }
                 }
             }
@@ -81,9 +81,9 @@ class ContactPresenter: ContactViewPresenterProtocol {
     func checkSaveContacts() {
         if let contacts = Storage.readContacts() {
             self.contacts = contacts
-            self.view.success()
+            self.view?.success()
         } else {
-            self.view.failure(alertType: nil)
+            self.view?.failure(alertType: nil)
         }
     }
     
@@ -92,7 +92,7 @@ class ContactPresenter: ContactViewPresenterProtocol {
         if let contacts = contacts {
             Storage.saveContacts(contacts: contacts)
         }
-        self.view.success()
+        self.view?.success()
     }
     
     func configure(cell: ContactTableViewCell, indexPath: IndexPath) {
@@ -108,12 +108,12 @@ class ContactPresenter: ContactViewPresenterProtocol {
         self.contacts?.remove(at: indexPath.row)
         if let contacts = self.contacts {
             Storage.saveContacts(contacts: contacts)
-            self.view.success()
+            self.view?.success()
         }
         
         if let contacts = self.contacts,
            contacts.isEmpty {
-            self.view.failure(alertType: .none)
+            self.view?.failure(alertType: .none)
         }
     }
 }

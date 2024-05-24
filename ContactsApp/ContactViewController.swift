@@ -41,6 +41,10 @@ class ContactViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .systemBackground
         self.setupNavigationBar()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.presenter?.checkSaveContacts()
     }
     
@@ -68,7 +72,7 @@ class ContactViewController: UIViewController {
         self.navigationItem.title = "Контакты"
         self.navigationController?.navigationBar.prefersLargeTitles = true
     }
-    
+
     @objc func loadContacts() {
         self.presenter?.requestAccess()
     }
@@ -92,7 +96,10 @@ class ContactViewController: UIViewController {
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
         self.present(alert, animated: true)
     }
-    
+
+    deinit {
+        print("Contact VC deinit")
+    }
 }
 
 extension ContactViewController: ContactViewProtocol {
@@ -128,8 +135,8 @@ extension ContactViewController: ContactViewProtocol {
 
 extension ContactViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let contact = self.presenter?.contacts?[indexPath.row]
-        let detailViewController = ModelBuilder.createDetailModule(contact: contact)
+        guard let contact = self.presenter?.contacts?[indexPath.row] else { return }
+        let detailViewController = ModelBuilder.createDetailModule(contact: contact, index: indexPath.row)
         self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }

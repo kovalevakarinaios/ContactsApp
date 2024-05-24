@@ -9,11 +9,15 @@ import UIKit
 
 protocol Builder {
     static func createContactModule() -> UIViewController
-    static func createDetailModule(contact: Contact?) -> UIViewController
+    static func createDetailModule(contact: Contact, index: Int) -> UIViewController 
     static func createFavoriteModule() -> UIViewController
 }
 
 class ModelBuilder: Builder {
+    
+    init() {
+        print("ModelBuilder init")
+    }
 
     static func createContactModule() -> UIViewController {
         let contactService = ContactsService()
@@ -23,9 +27,9 @@ class ModelBuilder: Builder {
         return view
     }
     
-    static func createDetailModule(contact: Contact?) -> UIViewController {
+    static func createDetailModule(contact: Contact, index: Int) -> UIViewController {
         let view = DetailViewController()
-        let presenter = DetailPresenter(view: view, contact: contact)
+        let presenter = DetailPresenter(view: view, contact: contact, index: index)
         view.presenter = presenter
         return view
     }
@@ -35,5 +39,9 @@ class ModelBuilder: Builder {
         let presenter = FavoritePresenter(view: view)
         view.presenter = presenter
         return view
+    }
+    
+    deinit {
+        print("ModelBuilder deinit")
     }
 }

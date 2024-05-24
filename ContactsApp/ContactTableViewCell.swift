@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol ContactViewControllerProtocol {
+protocol ContactViewControllerProtocol: AnyObject {
     func addContactToFavorite(cell: UITableViewCell)
 }
 
@@ -15,7 +15,7 @@ class ContactTableViewCell: UITableViewCell {
     
     static let identifier = "ContactListTableViewCell"
     
-    var delegate: ContactViewControllerProtocol?
+    weak var delegate: ContactViewControllerProtocol?
     
     private lazy var avatar: UIImageView = {
         var avatar = UIImageView()

@@ -41,6 +41,10 @@ class FavoriteViewController: UIViewController {
             self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor)
         ])
     }
+    
+    deinit {
+        print("Favorite VC deinit")
+    }
 }
 
 extension FavoriteViewController: UITableViewDataSource {
